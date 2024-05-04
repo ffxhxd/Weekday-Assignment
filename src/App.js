@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import useJobData from './Hooks/useJobData';
 
-function App() {
+function JobList() {
+  const [offset, setOffset] = useState(0); 
+  useJobData(offset);  // Use custom hook with the current offset
+
+  const { jobs, loading, error } = useSelector(state => state.job);
+
+  const loadMoreJobs = () => {
+    setOffset(prevOffset => prevOffset + 1);  // Increase offset by 1
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {jobs.map(job => (
+        <div key={job.jdUid}>
+          <h3>{job.jobRole} at {job.companyName}</h3>
+          <p>{job.jobDetailsFromCompany}</p>
+        </div>
+      ))}
+      {loading && <p>Loading jobs...</p>}
+      {error && <p>Error: {error}</p>}  // Display error if fetching fails
+      <button onClick={loadMoreJobs}>Load More Jobs</button>  // Button to load more jobs
     </div>
   );
 }
 
-export default App;
+export default JobList;
