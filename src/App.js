@@ -129,13 +129,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useJobData from './Hooks/useJobData';
-import JobCard from './Components/MuiCardTest';  // Import the JobCard component
+import JobCard from './Components/JobCard';  // Import the JobCard component
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const theme = createTheme({
   typography: {
-    fontFamily: '"Lexend", serif', // Use your font here
+    fontFamily: '"Lexend", serif',
   }
 });
 
@@ -211,7 +211,7 @@ function JobList() {
   return (
     <ThemeProvider theme={theme}>
 
-<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
          <select style={{ margin: '20px', padding: '10px' }} onChange={handleLocationChange}>
            <option value="All">All Locations</option>
            <option value="remote">Remote</option>
