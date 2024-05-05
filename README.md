@@ -48,13 +48,9 @@ This project is a Candidate Application Platform that enables users to view job 
 - **Handling Null Data:** The job cards handle null values gracefully by excluding them from the displayed data.
 - **Filter Logic:** Filtering is implemented on the frontend, only using the data available up to that point.
 
-## Contributions and Feedback
-
-Feel free to open issues or submit pull requests for improvements. Your contributions are welcome!
-
 ## Author
 
-- [Your Name](https://github.com/ffxhxd)
+- [Fahad](https://github.com/ffxhxd)
 
 ## Best Industry Standard Practices Implemented
 
@@ -69,3 +65,5 @@ Feel free to open issues or submit pull requests for improvements. Your contribu
 - **Robust Error Handling:** Comprehensive error-handling mechanisms have been implemented, providing meaningful messages for debugging.
 - **Thorough Manual Testing:** Rigorous manual testing has been conducted across various devices, ensuring a robust and user-friendly application.
 - **Unit Tests in Jest:** Comprehensive unit tests have been written using Jest with 100% coverage.
+
+- ## Made with ❤️ for Weekday
