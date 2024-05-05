@@ -36,7 +36,7 @@ function JobList() {
         }, 100);
       }
     }, {
-      threshold: 0.5 // Adjust as needed
+      threshold: 0.5
     });
   
     const sentinel = document.getElementById('scroll-sentinel');

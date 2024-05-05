@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Chip, TextField, Box } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Chip, Box, TextField } from '@mui/material';
 
 function JobFilters({ filters, setFilters }) {
   // Clear a specific value from a multi-value filter or clear entirely
@@ -36,17 +36,16 @@ function JobFilters({ filters, setFilters }) {
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 2, p: 2 }}>
       {/* Min Experience Filter */}
       <FormControl variant="outlined" sx={{ m: 1, minWidth: 170 }}>
-        <InputLabel>Min Experience</InputLabel>
+        <InputLabel htmlFor="min-experience-select">Min Experience</InputLabel>
         <Select
           multiple
+          id="min-experience-select"
           value={filters.minExperience}
           onChange={(e) => handleSelectChange('minExperience', e)}
           label="Min Experience"
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) =>
-                renderChip('minExperience', `${value} years`, value)
-              )}
+              {selected.map((value) => renderChip('minExperience', `${value} years`, value))}
             </Box>
           )}
         >
@@ -58,17 +57,16 @@ function JobFilters({ filters, setFilters }) {
 
       {/* Job Role Filter */}
       <FormControl variant="outlined" sx={{ m: 1, minWidth: 170 }}>
-        <InputLabel>Job Role</InputLabel>
+        <InputLabel htmlFor="job-role-select">Job Role</InputLabel>
         <Select
           multiple
+          id="job-role-select"
           value={filters.jobRole}
           onChange={(e) => handleSelectChange('jobRole', e)}
           label="Job Role"
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) =>
-                renderChip('jobRole', value, value)
-              )}
+              {selected.map((value) => renderChip('jobRole', value, value))}
             </Box>
           )}
         >
@@ -82,8 +80,9 @@ function JobFilters({ filters, setFilters }) {
 
       {/* Location Filter */}
       <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel>Location</InputLabel>
+        <InputLabel htmlFor="location-select">Location</InputLabel>
         <Select
+          id="location-select"
           value={filters.locationFilter}
           onChange={(e) => setFilters({ ...filters, locationFilter: e.target.value })}
           label="Location"
@@ -111,8 +110,9 @@ function JobFilters({ filters, setFilters }) {
 
       {/* Min Base Pay Filter */}
       <FormControl variant="outlined" sx={{ m: 1, minWidth: 170 }}>
-        <InputLabel>Min Base Pay</InputLabel>
+        <InputLabel htmlFor="min-base-pay-select">Min Base Pay</InputLabel>
         <Select
+          id="min-base-pay-select"
           value={filters.minBasePay}
           onChange={(e) => setFilters({ ...filters, minBasePay: e.target.value })}
           label="Min Base Pay"
@@ -139,6 +139,7 @@ function JobFilters({ filters, setFilters }) {
 
       {/* Company Name Filter */}
       <TextField
+        id="company-name-input"
         label="Company Name"
         variant="outlined"
         value={filters.companyName}
