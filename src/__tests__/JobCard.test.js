@@ -1,39 +1,42 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import JobCard from '../Components/JobCard';
-import { act } from 'react';
 
-const mockJob = {
-  companyName: 'TechCorp',
+// Mock job data
+const job = {
+  logoUrl: 'https://via.placeholder.com/56',
+  companyName: 'Tech Corp',
   jobRole: 'Software Engineer',
-  location: 'Remote',
+  location: 'San Francisco, CA',
+  minExp: 2,
+  maxExp: 5,
   minJdSalary: 80,
   maxJdSalary: 120,
-  logoUrl: '/logo.png',
-  jobDetailsFromCompany: 'This is an exciting job at TechCorp.',
-  minExp: 2,
-  jdLink: 'https://example.com/job'
+  jobDetailsFromCompany: 'We are looking for a talented Software Engineer...',
+  jdLink: 'https://techcorp.jobs/software-engineer'
 };
 
-test('renders JobCard correctly and opens modal', () => {
-  render(<JobCard job={mockJob} />);
+describe('JobCard Component', () => {
+  it('renders the job information correctly', () => {
+    render(<JobCard job={job} />);
 
-  // Verify that "TechCorp" appears at least once
-  const allTechCorp = screen.getAllByText(/techcorp/i);
-  expect(allTechCorp.length).toBeGreaterThan(0);
+    expect(screen.getByText(job.companyName)).toBeInTheDocument();
+    expect(screen.getByText(job.jobRole)).toBeInTheDocument();
+  });
 
-  expect(screen.getByText(/software engineer/i)).toBeInTheDocument();
-  expect(screen.getByText(/remote/i)).toBeInTheDocument();
+  it('closes the modal when pressing "Escape"', () => {
+    render(<JobCard job={job} />);
 
-  // Custom function to find formatted salary
-  expect(screen.getByText((content, element) => {
-    const hasText = (node) => node.textContent === 'Estimated Salary: $80k - $120k ✅';
-    return hasText(element);
-  })).toBeInTheDocument();
+    // Open the modal
+    fireEvent.click(screen.getByText('View Job'));
 
-  // Simulate modal opening
-  fireEvent.click(screen.getByText(/view job/i));
+    // Verify that modal content is initially visible
+    expect(screen.getByText('View Job Posting')).toBeInTheDocument();
 
-  // Using `getAllByText` to handle multiple instances
-  const jobDetails = screen.getAllByText(/this is an exciting job at techcorp/i);
-  expect(jobDetails.length).toBeGreaterThan(0);
+    // Press escape key to close
+    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
+
+    // Make sure the modal content is no longer visible
+    expect(screen.queryByText('View Job Posting')).not.toBeInTheDocument();
+  });
 });

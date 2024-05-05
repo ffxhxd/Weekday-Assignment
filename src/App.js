@@ -1,10 +1,12 @@
-import React from 'react'
-import JobList from './Components/JobList'
+import React from 'react';
+import InfiniteScrollJobList from './Components/InfiniteScrollJobList';
 
 const App = () => {
   return (
-      <JobList/>
-  )
-}
+    <div>
+      <InfiniteScrollJobList />
+    </div>
+  );
+};
 
-export default App
+export default App;

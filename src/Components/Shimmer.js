@@ -1,9 +1,10 @@
 import React from 'react';
-import './Styles/Shimmer.css'
+import './Styles/Shimmer.css';
 
 function Shimmer() {
-  return (
-    <div className="card">
+  // Create an array to render three shimmer cards
+  const shimmerCards = Array.from({ length: 3 }, (_, index) => (
+    <div key={index} className="card">
       <div className="shimmerBG media"></div>
       <div className="p-32">
         <div className="shimmerBG title-line"></div>
@@ -15,7 +16,9 @@ function Shimmer() {
         <div className="shimmerBG content-line end"></div>
       </div>
     </div>
-  );
+  ));
+
+  return <div className="shimmer-container">{shimmerCards}</div>;
 }
 
 export default Shimmer;

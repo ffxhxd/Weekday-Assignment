@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import useJobData from '../Hooks/useJobData';
 import JobFilters from './JobFilters';
 import JobListContent from './JobListContent';
 import { createTheme, ThemeProvider } from '@mui/material';
@@ -12,9 +11,7 @@ const theme = createTheme({
 });
 
 function JobList() {
-  const [offset, setOffset] = useState(0);
   const [uniqueJobs, setUniqueJobs] = useState([]);
-  const [loading, setLoading] = useState(false);
   const { jobs, error } = useSelector(state => state.job);
   const [filters, setFilters] = useState({
     minExperience: [],
@@ -24,33 +21,6 @@ function JobList() {
     companyName: ''
   });
 
-  useJobData(offset);
-
-  useEffect(() => {
-    let debounceTimeout;
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && !loading) {
-        debounceTimeout = setTimeout(() => {
-          setLoading(true);
-          setOffset(prev => prev + 1);
-        }, 100);
-      }
-    }, {
-      threshold: 0.5
-    });
-  
-    const sentinel = document.getElementById('scroll-sentinel');
-    if (sentinel) {
-      observer.observe(sentinel);
-    }
-  
-    return () => {
-      if (debounceTimeout) clearTimeout(debounceTimeout);
-      if (sentinel) observer.unobserve(sentinel);
-    };
-  }, [loading]);
-  
-
   useEffect(() => {
     const uniqueJobMap = new Map();
     jobs.forEach(job => {
@@ -59,7 +29,6 @@ function JobList() {
       }
     });
     setUniqueJobs(Array.from(uniqueJobMap.values()));
-    setLoading(false);
   }, [jobs]);
 
   const filteredJobs = uniqueJobs.filter(job => {
@@ -78,7 +47,7 @@ function JobList() {
   return (
     <ThemeProvider theme={theme}>
         <JobFilters filters={filters} setFilters={setFilters} />
-        <JobListContent loading={loading} error={error} filteredJobs={filteredJobs} />
+        <JobListContent error={error} filteredJobs={filteredJobs} />
     </ThemeProvider>
   );
 }

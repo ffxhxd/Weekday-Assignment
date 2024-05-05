@@ -1,20 +1,23 @@
-import { useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ALL_JOBS_API } from "../Utils/constants";
 import { fetchJobsStart, fetchJobsSuccess, fetchJobsFailure } from "../Utils/Redux/jobSlice";
 
 const useJobData = (offset) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const jobs = useSelector((state) => state.jobs);
 
   const fetchData = useCallback(async () => {
     dispatch(fetchJobsStart());
+    setLoading(true);
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const body = JSON.stringify({
-      "limit": 12,
-      "offset": offset  // Use the offset passed to the hook
+      "limit": 9,
+      "offset": offset 
     });
 
     const requestOptions = {
@@ -29,15 +32,16 @@ const useJobData = (offset) => {
         dispatch(fetchJobsSuccess(result));
     } catch (error) {
         dispatch(fetchJobsFailure('Failed to fetch jobs'));
+    } finally {
+        setLoading(false);
     }
 }, [dispatch, offset]);
-
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  return null; // This hook does not need to return anything
+  return { jobs, loading };
 };
 
 export default useJobData;
