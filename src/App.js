@@ -3,9 +3,7 @@ import JobList from './Components/JobList'
 
 const App = () => {
   return (
-    <div>
       <JobList/>
-    </div>
   )
 }
 

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import useJobData from '../Hooks/useJobData';
 import JobFilters from './JobFilters';
 import JobListContent from './JobListContent';
-import { createTheme, ThemeProvider, Box } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const theme = createTheme({
   typography: {
@@ -17,9 +17,9 @@ function JobList() {
   const [loading, setLoading] = useState(false);
   const { jobs, error } = useSelector(state => state.job);
   const [filters, setFilters] = useState({
-    minExperience: '',
+    minExperience: [],
     locationFilter: '',
-    jobRole: '',
+    jobRole: [],
     minBasePay: '',
     companyName: ''
   });
@@ -27,26 +27,29 @@ function JobList() {
   useJobData(offset);
 
   useEffect(() => {
+    let debounceTimeout;
     const observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && !loading) {
-        setLoading(true);
-        setOffset(prev => prev + 1);
+        debounceTimeout = setTimeout(() => {
+          setLoading(true);
+          setOffset(prev => prev + 1);
+        }, 100);
       }
     }, {
-      threshold: 1.0
+      threshold: 0.5 // Adjust as needed
     });
-
+  
     const sentinel = document.getElementById('scroll-sentinel');
     if (sentinel) {
       observer.observe(sentinel);
     }
-
+  
     return () => {
-      if (sentinel) {
-        observer.unobserve(sentinel);
-      }
+      if (debounceTimeout) clearTimeout(debounceTimeout);
+      if (sentinel) observer.unobserve(sentinel);
     };
   }, [loading]);
+  
 
   useEffect(() => {
     const uniqueJobMap = new Map();
@@ -59,20 +62,23 @@ function JobList() {
     setLoading(false);
   }, [jobs]);
 
-  const filteredJobs = uniqueJobs.filter(job => (
-    (!filters.locationFilter || job.location === filters.locationFilter || filters.locationFilter === 'In-Office') &&
-    (!filters.minExperience || (filters.minExperience && job.minExp <= parseInt(filters.minExperience) && job.maxExp >= parseInt(filters.minExperience))) &&
-    (!filters.jobRole || job.jobRole === filters.jobRole) &&
-    (!filters.minBasePay || (job.minJdSalary >= parseInt(filters.minBasePay))) &&
-    (!filters.companyName || job.companyName.toLowerCase().includes(filters.companyName.toLowerCase()))
-  ));
+  const filteredJobs = uniqueJobs.filter(job => {
+    const meetsMinExperience = filters.minExperience.length === 0 || filters.minExperience.some(exp => job.minExp <= parseInt(exp) && job.maxExp >= parseInt(exp));
+    const matchesJobRole = filters.jobRole.length === 0 || filters.jobRole.includes(job.jobRole);
+
+    return (
+      (!filters.locationFilter || job.location === filters.locationFilter || filters.locationFilter === 'In-Office') &&
+      meetsMinExperience &&
+      matchesJobRole &&
+      (!filters.minBasePay || (job.minJdSalary >= parseInt(filters.minBasePay))) &&
+      (!filters.companyName || job.companyName.toLowerCase().includes(filters.companyName.toLowerCase()))
+    );
+  });
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: "center", gap: 2, p: 2 }}>
         <JobFilters filters={filters} setFilters={setFilters} />
-      </Box>
-      <JobListContent loading={loading} error={error} filteredJobs={filteredJobs} />
+        <JobListContent loading={loading} error={error} filteredJobs={filteredJobs} />
     </ThemeProvider>
   );
 }

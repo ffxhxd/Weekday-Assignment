@@ -1,5 +1,5 @@
 import React from 'react';
-import './Shimmer.css'; // Adjust the path based on your project structure
+import './Styles/Shimmer.css'
 
 function Shimmer() {
   return (

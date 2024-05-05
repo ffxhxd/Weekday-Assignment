@@ -1,31 +1,53 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Chip, TextField } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { FormControl, InputLabel, Select, MenuItem, Chip, TextField, Box } from '@mui/material';
 
 function JobFilters({ filters, setFilters }) {
-  const handleClearFilter = (filter) => {
-    setFilters({ ...filters, [filter]: '' });
+  // Clear a specific value from a multi-value filter or clear entirely
+  const handleClearFilter = (filter, value = null) => {
+    if (value !== null) {
+      setFilters({ ...filters, [filter]: filters[filter].filter((item) => item !== value) });
+    } else {
+      setFilters({ ...filters, [filter]: '' });
+    }
   };
 
+  // Update the filter state with the selected values
+  const handleSelectChange = (filter, event) => {
+    const value = event.target.value;
+    setFilters({ ...filters, [filter]: typeof value === 'string' ? value.split(',') : value });
+  };
+
+  // Render chips with the ability to prevent the dropdown from opening
+  const renderChip = (filterName, label, value) => (
+    <Chip
+      key={`${filterName}-${value}`}
+      label={label}
+      onMouseDown={(e) => {
+        e.stopPropagation(); // Prevent dropdown from opening
+      }}
+      onDelete={(e) => {
+        e.stopPropagation(); // Prevent dropdown from opening
+        handleClearFilter(filterName, value);
+      }}
+    />
+  );
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2, padding: 2 }}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 2, p: 2 }}>
+      {/* Min Experience Filter */}
       <FormControl variant="outlined" sx={{ m: 1, minWidth: 170 }}>
         <InputLabel>Min Experience</InputLabel>
         <Select
+          multiple
           value={filters.minExperience}
-          onChange={(e) => setFilters({ ...filters, minExperience: e.target.value })}
+          onChange={(e) => handleSelectChange('minExperience', e)}
           label="Min Experience"
           renderValue={(selected) => (
-            <Chip
-              onDelete={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleClearFilter('minExperience');
-              }}
-              deleteIcon={<CloseIcon />}
-              label={`${selected} years`}
-              onMouseDown={(e) => e.stopPropagation()}
-            />
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value) =>
+                renderChip('minExperience', `${value} years`, value)
+              )}
+            </Box>
           )}
         >
           {Array.from({ length: 10 }, (_, i) => (
@@ -34,52 +56,22 @@ function JobFilters({ filters, setFilters }) {
         </Select>
       </FormControl>
 
-      <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel>Location</InputLabel>
-        <Select
-          value={filters.locationFilter}
-          onChange={(e) => setFilters({ ...filters, locationFilter: e.target.value })}
-          label="Location"
-          renderValue={(selected) => selected ? (
-            <Chip
-              onDelete={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleClearFilter('location');
-              }}
-              deleteIcon={<CloseIcon />}
-              label={selected}
-              onMouseDown={(e) => e.stopPropagation()}
-            />
-          ) : 'All Locations'}
-        >
-          <MenuItem value="">All Locations</MenuItem>
-          <MenuItem value="remote">Remote</MenuItem>
-          <MenuItem value="hybrid">Hybrid</MenuItem>
-          <MenuItem value="In-Office">In-Office</MenuItem>
-        </Select>
-      </FormControl>
-
+      {/* Job Role Filter */}
       <FormControl variant="outlined" sx={{ m: 1, minWidth: 170 }}>
         <InputLabel>Job Role</InputLabel>
         <Select
+          multiple
           value={filters.jobRole}
-          onChange={(e) => setFilters({ ...filters, jobRole: e.target.value })}
+          onChange={(e) => handleSelectChange('jobRole', e)}
           label="Job Role"
           renderValue={(selected) => (
-            <Chip
-              onDelete={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleClearFilter('jobRole');
-              }}
-              deleteIcon={<CloseIcon />}
-              label={selected}
-              onMouseDown={(e) => e.stopPropagation()}
-            />
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value) =>
+                renderChip('jobRole', value, value)
+              )}
+            </Box>
           )}
         >
-          <MenuItem value="">All Roles</MenuItem>
           <MenuItem value="frontend">Frontend</MenuItem>
           <MenuItem value="backend">Backend</MenuItem>
           <MenuItem value="android">Android</MenuItem>
@@ -88,6 +80,36 @@ function JobFilters({ filters, setFilters }) {
         </Select>
       </FormControl>
 
+      {/* Location Filter */}
+      <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel>Location</InputLabel>
+        <Select
+          value={filters.locationFilter}
+          onChange={(e) => setFilters({ ...filters, locationFilter: e.target.value })}
+          label="Location"
+          renderValue={(selected) => (
+            <Box>
+              <Chip
+                onMouseDown={(e) => {
+                  e.stopPropagation(); // Prevent dropdown from opening
+                }}
+                onDelete={(e) => {
+                  e.stopPropagation(); // Prevent dropdown from opening
+                  handleClearFilter('locationFilter');
+                }}
+                label={selected || 'All Locations'}
+              />
+            </Box>
+          )}
+        >
+          <MenuItem value="">All Locations</MenuItem>
+          <MenuItem value="remote">Remote</MenuItem>
+          <MenuItem value="hybrid">Hybrid</MenuItem>
+          <MenuItem value="In-Office">In-Office</MenuItem>
+        </Select>
+      </FormControl>
+
+      {/* Min Base Pay Filter */}
       <FormControl variant="outlined" sx={{ m: 1, minWidth: 170 }}>
         <InputLabel>Min Base Pay</InputLabel>
         <Select
@@ -95,16 +117,18 @@ function JobFilters({ filters, setFilters }) {
           onChange={(e) => setFilters({ ...filters, minBasePay: e.target.value })}
           label="Min Base Pay"
           renderValue={(selected) => (
-            <Chip
-              onDelete={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleClearFilter('minBasePay');
-              }}
-              deleteIcon={<CloseIcon />}
-              label={`$${selected}K`}
-              onMouseDown={(e) => e.stopPropagation()}
-            />
+            <Box>
+              <Chip
+                onMouseDown={(e) => {
+                  e.stopPropagation(); // Prevent dropdown from opening
+                }}
+                onDelete={(e) => {
+                  e.stopPropagation(); // Prevent dropdown from opening
+                  handleClearFilter('minBasePay');
+                }}
+                label={`$${selected}K`}
+              />
+            </Box>
           )}
         >
           {Array.from({ length: 10 }, (_, i) => (
@@ -113,6 +137,7 @@ function JobFilters({ filters, setFilters }) {
         </Select>
       </FormControl>
 
+      {/* Company Name Filter */}
       <TextField
         label="Company Name"
         variant="outlined"
@@ -120,7 +145,7 @@ function JobFilters({ filters, setFilters }) {
         onChange={(e) => setFilters({ ...filters, companyName: e.target.value })}
         sx={{ m: 1, minWidth: 170 }}
       />
-    </div>
+    </Box>
   );
 }
 
