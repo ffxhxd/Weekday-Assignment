@@ -1,5 +1,6 @@
 
 # Weekday Assignment: Candidate Application Platform
+- [Live Link](https://6637492ac26282af1fe888fb--teal-kheer-fff562.netlify.app/)
 
 ## Overview
 
