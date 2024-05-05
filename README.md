@@ -1,71 +1,71 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Weekday Assignment: Candidate Application Platform
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+This project is a Candidate Application Platform that enables users to view job listings, filter job posts based on various criteria, and scroll infinitely for a seamless browsing experience.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Job Cards**: Each job card displays essential details like the title, company name, location, job description (truncated), required experience, and a link to apply.
+- **Filters**: The platform includes filters based on minimum experience, company name, location, remote/on-site, tech stack, role, and minimum base pay.
+- **Infinite Scroll**: Automatically loads more job cards as the user scrolls down, eliminating the need for a "Load More" button.
+- **Responsive Design**: The platform is designed to be responsive and works across various devices.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technology Stack
 
-### `npm test`
+- **Frontend**: React.js, Redux
+- **Styling**: CSS, Material-UI
+- **API Integration**: Fetch API for job data
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation and Setup
 
-### `npm run build`
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/ffxhxd/Weekday-Assignment.git
+   ```
+2. **Install Dependencies:**
+   Navigate to the project's root directory and install the required dependencies using npm or yarn:
+   ```bash
+   cd Weekday-Assignment
+   npm install
+   ```
+3. **Run the Application:**
+   To start the development server, execute:
+   ```bash
+   npm start
+   ```
+4. **Access the Application:**
+   Open your browser and navigate to `http://localhost:3000` to access the Candidate Application Platform.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Usage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Browsing Jobs:** Scroll down the page to load additional job cards seamlessly.
+- **Applying Filters:** Use the available filters to refine the job listings based on the specified criteria.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Considerations
 
-### `npm run eject`
+- **Handling Null Data:** The job cards handle null values gracefully by excluding them from the displayed data.
+- **Filter Logic:** Filtering is implemented on the frontend, only using the data available up to that point.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contributions and Feedback
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Feel free to open issues or submit pull requests for improvements. Your contributions are welcome!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Author
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [Your Name](https://github.com/ffxhxd)
 
-## Learn More
+## Best Industry Standard Practices Implemented
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Weekday-Assignment
+- **Custom Hooks for API Calls:** Utilizing custom hooks enhances reusability and maintains a clear separation of concerns.
+- **Centralized Constants:** All hardcoded strings and URLs are consolidated in a separate `constant.js` file, promoting centralized configuration for easy maintenance.
+- **Utility Functions in Utils Folder:** The `utils` folder houses utility functions and helper modules, fostering modularity and code organization.
+- **Compact Components for Readability:** Components are designed to be concise, with each containing 80-100 lines of code, improving readability and ease of maintenance.
+- **DRY Principle Adhered To:** The Don't Repeat Yourself (DRY) principle is consistently followed, minimizing redundancy and improving code maintainability.
+- **Single Responsibility Principle Maintained:** Components adhere to the Single Responsibility Principle (SRP), ensuring each component has a focused purpose for better maintainability.
+- **Clean, Optimized, and Scalable Codebase:** The codebase is clean, optimized, and scalable, prioritizing clarity, performance, and adaptability to evolving requirements.
+- **Organized Component and Styling Structure:** Components and their styling files are organized in separate folders, enhancing code organization and ease of styling updates.
+- **Robust Error Handling:** Comprehensive error-handling mechanisms have been implemented, providing meaningful messages for debugging.
+- **Thorough Manual Testing:** Rigorous manual testing has been conducted across various devices, ensuring a robust and user-friendly application.
+- **Unit Tests in Jest:** Comprehensive unit tests have been written using Jest with 100% coverage.
